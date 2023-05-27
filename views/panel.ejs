@@ -161,8 +161,10 @@
             })
         })
 
-        boxs[boxs.length - 1].querySelector("a").click()
-
+        if (boxs.length > 0) {
+            boxs[boxs.length - 1].querySelector("a").click()
+        }
+        
         async function get(url, callback) {
             try {
                 let res = await axios.get(url)

@@ -2,6 +2,7 @@ const express = require("express")
 const app = express()
 const { v4: uuid } = require("uuid")
 const { LocalStorage } = require("node-localstorage")
+const localstorage = new LocalStorage("./ssd")
 const server = require("http").createServer(app)
 const io = require("socket.io")(server)
 
@@ -11,26 +12,17 @@ app.use(require("cookie-parser")())
 app.set("view engine", "ejs")
 
 app.get("/", (req, res) => {
-    if (req.cookies.token != null) {
-        const localstorage = new LocalStorage(`./ssd/${req.cookies.token}`)
-        let ids = []
-        for (let i = 0; i < localstorage.length; i++) {
-            ids.push(localstorage.key(i))
-        }
-
-        res.render("index", {
-            data: ids
-        })
-    } else {
-        let id = uuid()
-        new LocalStorage(`./ssd/${id}`)
-        res.cookie("token", id)
-        res.redirect("/")
+    let ids = []
+    for (let i = 0; i < localstorage.length; i++) {
+        ids.push(localstorage.key(i))
     }
+
+    res.render("index", {
+        data: ids
+    })
 })
 
 app.get("/panel", (req, res) => {
-    const localstorage = new LocalStorage(`./ssd/${req.cookies.token}`)
     let { id } = req.query
     let getData = localstorage.getItem(id)
 
@@ -46,7 +38,6 @@ app.get("/panel", (req, res) => {
 })
 
 app.get("/mimic/:id", (req, res) => {
-    const localstorage = new LocalStorage(`./ssd/${req.cookies.token}`)
     let { id } = req.params
     let getData = localstorage.getItem(id)
     let createData = {}
@@ -78,7 +69,6 @@ app.get("/mimic/:id", (req, res) => {
 })
 
 app.get("/create", (req, res) => {
-    const localstorage = new LocalStorage(`./ssd/${req.cookies.token}`)
     let id = uuid()
     localstorage.setItem(id, "[]")
     res.send(id)
@@ -86,7 +76,6 @@ app.get("/create", (req, res) => {
 
 
 app.get("/delete", (req, res) => {
-    const localstorage = new LocalStorage(`./ssd/${req.cookies.token}`)
     let { value } = req.query
 
     if (value == "all") {
@@ -101,7 +90,6 @@ app.get("/delete", (req, res) => {
 })
 
 app.get("/clear-all", (req, res) => {
-    const localstorage = new LocalStorage(`./ssd/${req.cookies.token}`)
     let { id } = req.query
 
     if (localstorage.getItem(id) != null) {
@@ -111,5 +99,5 @@ app.get("/clear-all", (req, res) => {
     res.send("Updated.")
 })
 
-const PORT = process.env.PORT || 3000
+const PORT = process.env.PORT
 server.listen(PORT)
