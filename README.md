@@ -1,3 +1,3 @@
 # mimic
-request hunter
+Request Hunter
 ![banner](./public/bg.jpg)
