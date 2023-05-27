@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MIMIC</title>
+    <link rel="stylesheet" href="https://madhanmaaz.github.io/iconslib//dists/css/all.min.css">
+    <link rel="stylesheet" href="./water.css">
+    <style>
+        body {
+            background: url(/bg.jpg);
+            background-size: cover;
+            height: 100vh;
+            background-repeat: no-repeat;
+        }
+
+        .header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            background: #000;
+            padding: 0 1rem;
+            border-radius: 10px;
+        }
+
+        .header h2 {
+            color: aqua;
+        }
+
+        .header button i {
+            font-size: 1.3rem;
+        }
+
+        .item {
+            background: #111;
+            padding: 0 .5rem;
+            border-radius: 10px;
+            cursor: pointer;
+            margin: .5rem auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .item button {
+            font-size: 1.5rem;
+            color: #ff3600;
+        }
+
+        .item .panel {
+            width: 100%;
+            text-decoration: underline;
+            color: rgb(0, 140, 255);
+        }
+    </style>
+    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+</head>
+
+<body>
+    <header class="header">
+        <div class="left">
+            <h2>MIMIC</h2>
+        </div>
+        <div class="right">
+            <button id="create" style="color: aqua;">Create</button>
+            <button title="Delete All" id="delete-all" style="color: red;"><i class="ma ma-delete-sweep"></i></button>
+        </div>
+    </header>
+
+    <section id="box">
+        <% for(let i of data) { %>
+            <li class="item">
+                <span class="panel" data-id="<%- i %>"><%- i %></span>
+                <button id="delete" data-id="<%- i %>"><i class="ma ma-delete"></i></button>
+            </li>
+            <% } %>
+    </section>
+
+    <script>
+        let createBtn = document.querySelector("#create")
+        let deleteAll = document.querySelector("#delete-all")
+        let box = document.querySelector("#box")
+
+        createBtn.addEventListener("click", () => {
+            get("/create", res => {
+                let id = res.data
+                box.innerHTML += ` <li class="item">
+                    <span class="panel" data-id="${id}">${id}</span>
+                    <button id="delete" data-id="${id}"><i class="ma ma-delete"></i></button>
+                </li>`
+                loadHandlers()
+            })
+        })
+
+        loadHandlers()
+        function loadHandlers() {
+            let deleteBtns = document.querySelectorAll("#delete")
+            let items = document.querySelectorAll("#box .panel")
+
+            deleteBtns.forEach(btn => {
+                btn.addEventListener("click", () => {
+                    if (confirm("Do you want delete this?")) {
+                        let id = btn.getAttribute("data-id")
+                        get(`/delete?value=${id}`, res => {
+                            location.reload()
+                        })
+                    }
+                })
+            })
+
+            items.forEach(i => {
+                i.addEventListener("click", () => {
+                    let id = i.getAttribute("data-id")
+                    location.href = `/panel?id=${id}`
+                })
+            })
+        }
+
+        deleteAll.addEventListener("click", async () => {
+            if (confirm("Do you want to delete all?")) {
+                get("/delete?value=all", res => {
+                    location.reload()
+                })
+            }
+        })
+
+        async function get(url, callback) {
+            try {
+                let res = await axios.get(url)
+                callback(res)
+            } catch (err) {
+                alert("requests error")
+            }
+        }
+    </script>
+</body>
+
+</html>

@@ -1,0 +1,177 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Panel</title>
+    <link rel="stylesheet" href="https://madhanmaaz.github.io/iconslib//dists/css/all.min.css">
+    <link rel="stylesheet" href="./water.css">
+    <style>
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            background: url(/bg.jpg);
+            background-size: cover;
+            background-repeat: no-repeat;
+        }
+
+        .header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            background: #000;
+            padding: 0 1rem;
+            border-radius: 10px;
+            height: 10vh;
+        }
+
+        .header h2 {
+            color: aqua;
+        }
+
+        .header button i {
+            font-size: 1.3rem;
+        }
+
+        .box {
+            background: #000;
+        }
+
+        .box .start {
+            background: #ff3600;
+            padding: .3rem;
+            border-radius: 7px;
+            font-size: 1.3rem;
+            color: #000;
+        }
+
+        .overview {
+            display: grid;
+            grid-template-columns: auto auto;
+            grid-gap: .5rem;
+            height: 10vh;
+        }
+
+        .overview div {
+            width: 100%;
+            margin: .5rem;
+        }
+
+        .overview div input {
+            width: 100%;
+        }
+
+        .boxs {
+            height: 73vh;
+            overflow: hidden;
+            overflow-y: scroll;
+        }
+    </style>
+    <script>
+        let url = `${location.origin}/mimic/<%- id %>`
+        let id = `<%- id %>`
+    </script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/4.6.1/socket.io.js"
+        integrity="sha512-xbQU0+iHqhVt7VIXi6vBJKPh3IQBF5B84sSHdjKiSccyX/1ZI7Vnkt2/8y8uruj63/DVmCxfUNohPNruthTEQA=="
+        crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+</head>
+
+<body>
+    <header class="header">
+        <div class="left">
+            <h2>MIMIC PANEL</h2>
+        </div>
+        <div class="right">
+            <button id="copy" title="Copy" style="color: aqua;"><i class="so so-copy"></i></button>
+            <button title="clear All" id="clear-all" style="color: red;"><i class="ma ma-clear-all"></i></button>
+        </div>
+    </header>
+
+    <section class="overview">
+        <div>
+            <label for="">URL</label>
+            <input type="text" id="url" placeholder="Url" readonly>
+        </div>
+        <div>
+            <label for="">Requests Count</label>
+            <input type="text" value="<%- data.length %>" placeholder="Requests Count" readonly>
+        </div>
+    </section>
+
+    <section class="boxs">
+
+        <%let index=1; for(let obj of data) { %>
+            <div class="box" id="<%- index %>">
+                <a href="#<%- index %>"></a>
+                <p class="start"> >> <%- index %></p>
+                <table>
+                    <% for(let i in obj) { %>
+                        <% if(typeof obj[i]==='object' && obj[i] !==null) { %>
+                            <tr>
+                                <th><%- i %></th>
+                                <td>
+                                    <table>
+                                        <% for(let a in obj[i]) {%>
+                                            <tr>
+                                                <th><%- a %></th>
+                                                <td><%- obj[i][a] %></td>
+                                            </tr>
+                                            <% } %>
+                                    </table>
+                                </td>
+                            </tr>
+                            <%} else { %>
+                                <tr>
+                                    <th><%- i %></th>
+                                    <td><%- obj[i] %></td>
+                                </tr>
+                                <% } %>
+                                    <% } %>
+                </table>
+            </div>
+            <% index +=1; } %>
+    </section>
+
+
+
+
+    <script>
+        const socket = io()
+        let copyBtn = document.querySelector("#copy")
+        let clearAll = document.querySelector("#clear-all")
+        let boxs = document.querySelectorAll(".boxs .box")
+        document.querySelector("#url").value = url
+
+        copyBtn.addEventListener("click", () => {
+            navigator.clipboard.writeText(url)
+        })
+
+        socket.on(id, (data) => {
+            location.reload()
+        })
+
+        clearAll.addEventListener("click", () => {
+            get("/clear-all?id=" + id, res => {
+                location.reload()
+            })
+        })
+
+        boxs[boxs.length - 1].querySelector("a").click()
+
+        async function get(url, callback) {
+            try {
+                let res = await axios.get(url)
+                callback(res)
+            } catch (err) {
+                alert("requests error")
+            }
+        }
+    </script>
+</body>
+
+</html>
