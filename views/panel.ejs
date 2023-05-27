@@ -141,7 +141,11 @@
 
 
     <script>
-        const socket = io()
+        const socket = io("", {
+            path: '/socket.io',
+            transports: ['websocket'],
+            secure: true,
+        })
         let copyBtn = document.querySelector("#copy")
         let clearAll = document.querySelector("#clear-all")
         let boxs = document.querySelectorAll(".boxs .box")
@@ -164,7 +168,7 @@
         if (boxs.length > 0) {
             boxs[boxs.length - 1].querySelector("a").click()
         }
-        
+
         async function get(url, callback) {
             try {
                 let res = await axios.get(url)
