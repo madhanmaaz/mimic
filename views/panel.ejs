@@ -14,6 +14,7 @@
         }
 
         body {
+            max-width: 100%;
             background: url();
             background-size: cover;
             background-repeat: no-repeat;
@@ -89,6 +90,7 @@
             <button style="background: #00ff00;color: #000;"><%- data.length %></button>
             <button id="copy" title="Copy" style="color: aqua;"><i class="so so-copy"></i></button>
             <button title="clear All" id="clear-all" style="color: red;"><i class="ma ma-clear-all"></i></button>
+            <a href="/download" target="_blank"><button><i class="so so-download-alt"></i></button></a>
         </div>
     </header>
 
@@ -119,7 +121,7 @@
                                         <% for(let a in obj[i]) {%>
                                             <tr>
                                                 <th><%- a %></th>
-                                                <td><%- obj[i][a] %></td>
+                                                <td><%- JSON.stringify(obj[i][a]) %></td>
                                             </tr>
                                             <% } %>
                                     </table>
