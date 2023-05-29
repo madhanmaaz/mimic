@@ -14,7 +14,7 @@
         }
 
         body {
-            background: url(/bg.jpg);
+            background: url();
             background-size: cover;
             background-repeat: no-repeat;
         }
@@ -71,14 +71,13 @@
             overflow-y: scroll;
         }
     </style>
-    <script>
-        let url = `${location.origin}/mimic/<%- id %>`
-        let id = `<%- id %>`
-    </script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/4.6.1/socket.io.js"
         integrity="sha512-xbQU0+iHqhVt7VIXi6vBJKPh3IQBF5B84sSHdjKiSccyX/1ZI7Vnkt2/8y8uruj63/DVmCxfUNohPNruthTEQA=="
         crossorigin="anonymous" referrerpolicy="no-referrer"></script>
     <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+    <script>
+        let url = `${location.origin}/`
+    </script>
 </head>
 
 <body>
@@ -87,6 +86,7 @@
             <h2>MIMIC PANEL</h2>
         </div>
         <div class="right">
+            <button style="background: #00ff00;color: #000;"><%- data.length %></button>
             <button id="copy" title="Copy" style="color: aqua;"><i class="so so-copy"></i></button>
             <button title="clear All" id="clear-all" style="color: red;"><i class="ma ma-clear-all"></i></button>
         </div>
@@ -98,8 +98,8 @@
             <input type="text" id="url" placeholder="Url" readonly>
         </div>
         <div>
-            <label for="">Requests Count</label>
-            <input type="text" value="<%- data.length %>" placeholder="Requests Count" readonly>
+            <label for="">IMAGE URL</label>
+            <input type="text" id="i-url" placeholder="Url" readonly>
         </div>
     </section>
 
@@ -137,9 +137,6 @@
             <% index +=1; } %>
     </section>
 
-
-
-
     <script>
         const socket = io("", {
             path: '/socket.io',
@@ -150,17 +147,18 @@
         let clearAll = document.querySelector("#clear-all")
         let boxs = document.querySelectorAll(".boxs .box")
         document.querySelector("#url").value = url
+        document.querySelector("#i-url").value = url + "a.allExtension"
 
         copyBtn.addEventListener("click", () => {
             navigator.clipboard.writeText(url)
         })
 
-        socket.on(id, (data) => {
+        socket.on("a", (data) => {
             location.reload()
         })
 
         clearAll.addEventListener("click", () => {
-            get("/clear-all?id=" + id, res => {
+            get("/clear", res => {
                 location.reload()
             })
         })

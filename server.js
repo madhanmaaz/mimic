@@ -1,103 +1,62 @@
 const express = require("express")
 const app = express()
-const { v4: uuid } = require("uuid")
 const { LocalStorage } = require("node-localstorage")
 const localstorage = new LocalStorage("./ssd")
 const server = require("http").createServer(app)
 const io = require("socket.io")(server)
 
-
+app.use(mimic)
 app.use(express.static(__dirname + "/public"))
 app.use(require("cookie-parser")())
 app.set("view engine", "ejs")
 
-app.get("/", (req, res) => {
-    let ids = []
-    for (let i = 0; i < localstorage.length; i++) {
-        ids.push(localstorage.key(i))
-    }
+function mimic(req, res, next) {
+    if (req.url == "/panel" || req.url == "/clear") {
+        next()
+    } else {
+        let createData = {}
+        createData["time"] = new Date()
+        createData["url"] = req.originalUrl
 
-    res.render("index", {
-        data: ids
+        for (let i in req.headers) {
+            createData[i] = req.headers[i]
+        }
+
+        createData["query"] = {}
+        for (let i in req.query) {
+            createData["query"][i] = req.query[i]
+        }
+
+        createData["cookies"] = {}
+        for (let i in req.cookies) {
+            createData["cookies"][i] = req.cookies[i]
+        }
+
+        let getData = JSON.parse(localstorage.getItem("data.json"))
+        getData.push(createData)
+        localstorage.setItem("data.json", JSON.stringify(getData, null, 4))
+        io.emit("a", "")
+        if (req.url.includes("/a")) {
+            next()
+        } else {
+            res.send("Response OK => 200")
+        }
+    }
+}
+
+app.get("/panel", (req, res) => {
+    let getData = JSON.parse(localstorage.getItem("data.json"))
+
+    res.render("panel", {
+        data: getData
     })
 })
 
-app.get("/panel", (req, res) => {
-    let { id } = req.query
-    let getData = localstorage.getItem(id)
-
-    if (getData != null) {
-        let getData = JSON.parse(localstorage.getItem(id))
-        res.render("panel", {
-            id,
-            data: getData
-        })
-    } else {
-        res.send("ERR: ID NOT FOUND")
-    }
+app.get("/clear", (req, res) => {
+    localstorage.setItem("data.json", "[]")
+    res.send("OK")
 })
 
-app.get("/mimic/:id", (req, res) => {
-    let { id } = req.params
-    let getData = localstorage.getItem(id)
-    let createData = {}
-    createData["time"] = new Date()
-
-    for (let i in req.headers) {
-        createData[i] = req.headers[i]
-    }
-
-    createData["query"] = {}
-    for (let i in req.query) {
-        createData["query"][i] = req.query[i]
-    }
-
-    createData["cookies"] = {}
-    for (let i in req.cookies) {
-        createData["cookies"][i] = req.cookies[i]
-    }
-
-    if (getData != null) {
-        let getData = JSON.parse(localstorage.getItem(id))
-        getData.push(createData)
-        localstorage.setItem(id, JSON.stringify(getData, null, 4))
-        io.emit(id, createData)
-        res.send(`${id} => 200 OK.`)
-    } else {
-        res.send("ERR: ID NOT FOUND")
-    }
-})
-
-app.get("/create", (req, res) => {
-    let id = uuid()
-    localstorage.setItem(id, "[]")
-    res.send(id)
-})
-
-
-app.get("/delete", (req, res) => {
-    let { value } = req.query
-
-    if (value == "all") {
-        localstorage.clear()
-    } else {
-        if (localstorage.getItem(value) != null) {
-            localstorage.removeItem(value)
-        }
-    }
-
-    res.send("Updated.")
-})
-
-app.get("/clear-all", (req, res) => {
-    let { id } = req.query
-
-    if (localstorage.getItem(id) != null) {
-        localstorage.setItem(id, "[]")
-    }
-
-    res.send("Updated.")
-})
 
 const PORT = process.env.PORT || 3000
 server.listen(PORT)
