@@ -1,3 +1,3 @@
 # mimic
 Request Hunter
-![banner](./public/bg.jpg)
+![banner](./assets/public/bg.jpg)
