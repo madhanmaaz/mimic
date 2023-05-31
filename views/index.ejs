@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mimic Dashboard</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/water.css@2/out/water.css">
+    <link rel="stylesheet" href="/assets/style.css">
+    <style>
+        body {
+            margin: auto;
+        }
+
+        section {
+            margin: 1rem auto;
+        }
+
+        .box {
+            background: #111;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            border-radius: 10px;
+            margin-top: .3rem;
+            cursor: pointer;
+        }
+
+        .box b {
+            border: 1px solid #ffffff73;
+            margin: 0 .2rem;
+        }
+
+        button {
+            font-size: 1.4rem;
+        }
+    </style>
+</head>
+
+<body>
+    <header class="header">
+        <div>
+            <h1>Mimic Dashboard</h1>
+        </div>
+        <div>
+            <button id="create"><i class="ma ma-add"></i></button>
+            <button id="delete-all"><i class="ma ma-delete-sweep"></i></button>
+        </div>
+    </header>
+
+    <section>
+        <% for(let i of data) {%>
+            <div class="box">
+                <div id="panel" data-id="<%- i.id %>" style="width: 100%;padding: .5rem;">
+                    <span><%- i.target %></span>
+                    <b></b>
+                    <span><%- i.id %></span>
+                </div>
+
+                <button data-name="<%- i.target %>" data-id="<%- i.id %>"
+                    style="background: red;margin: 0 !important;"><i class="ma ma-delete"></i></button>
+            </div>
+            <% } %>
+    </section>
+
+
+    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+    <script>
+        document.querySelector("#create").addEventListener("click", () => {
+            let userInput = prompt("Enter Target Name").trim()
+
+            if (userInput && userInput.length > 0) {
+                GET("/create?name=" + userInput, res => {
+                    location.reload()
+                })
+            }
+        })
+
+        document.querySelector("#delete-all").addEventListener("click", () => {
+            if (confirm("delete all?")) {
+                GET("/delete?value=all", res => {
+                    location.reload()
+                })
+            }
+        })
+
+        document.querySelectorAll(".box button").forEach(btn => {
+            btn.addEventListener("click", () => {
+                let id = btn.getAttribute("data-id")
+                let name = btn.getAttribute("data-name")
+                if (confirm("delete " + name + " ?")) {
+                    GET("/delete?value=" + id, res => {
+                        location.reload()
+                    })
+                }
+            })
+        })
+
+        document.querySelectorAll(".box #panel").forEach(btn => {
+            btn.addEventListener("click", () => {
+                let id = btn.getAttribute("data-id")
+                location.href = `/panel?id=${id}`
+            })
+        })
+
+        async function GET(url, callback) {
+            try {
+                callback(await axios.get(url))
+            } catch {
+                alert("request error")
+            }
+        }
+
+    </script>
+</body>
+
+</html>

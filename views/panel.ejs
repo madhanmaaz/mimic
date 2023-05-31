@@ -5,9 +5,9 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Panel</title>
-    <link rel="stylesheet" href="https://madhanmaaz.github.io/iconslib//dists/css/all.min.css">
+    <title>0 Mimic Panel</title>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/water.css@2/out/water.css">
+    <link rel="stylesheet" href="/assets/style.css">
     <style>
         * {
             box-sizing: border-box;
@@ -15,61 +15,67 @@
 
         body {
             max-width: 100%;
-            background: url();
-            background-size: cover;
-            background-repeat: no-repeat;
+        }
+
+        label {
+            text-transform: uppercase;
+        }
+
+        section {
+            padding: .4rem;
         }
 
         .header {
+            height: 8vh;
+        }
+
+        .inp {
+            display: inline-block;
+        }
+
+        .over {
+            height: 12vh;
+            background: hsla(0, 0%, 0%, 0.2);
+        }
+
+        .content {
+            height: 80vh;
+            width: 100%;
+            overflow-y: scroll;
+        }
+
+        button i {
+            font-size: 1rem;
+        }
+
+        dialog {
+            width: 100%;
+            height: 100%;
+            position: fixed;
+            top: 0;
+            left: 0;
+            overflow-y: scroll;
+        }
+
+        dialog .head {
             display: flex;
             align-items: center;
             justify-content: space-between;
-            background: #000;
-            padding: 0 1rem;
-            border-radius: 10px;
-            height: 10vh;
-        }
-
-        .header h2 {
-            color: aqua;
-        }
-
-        .header button i {
-            font-size: 1.3rem;
         }
 
         .box {
             background: #000;
-        }
-
-        .box .start {
-            background: #ff3600;
-            padding: .3rem;
             border-radius: 7px;
-            font-size: 1.3rem;
-            color: #000;
         }
 
-        .overview {
-            display: grid;
-            grid-template-columns: auto auto;
-            grid-gap: .5rem;
-            height: 10vh;
+        table {
+            background: #000000;
         }
 
-        .overview div {
-            width: 100%;
-            margin: .5rem;
-        }
-
-        .overview div input {
-            width: 100%;
-        }
-
-        .boxs {
-            height: 73vh;
-            overflow: hidden;
-            overflow-y: scroll;
+        .box h2 {
+            background: #ff3600;
+            padding: .2rem;
+            border-radius: 7px;
         }
     </style>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/4.6.1/socket.io.js"
@@ -77,66 +83,74 @@
         crossorigin="anonymous" referrerpolicy="no-referrer"></script>
     <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
     <script>
-        let url = `${location.origin}/`
+        let id = `<%- page.id %>`
     </script>
 </head>
 
 <body>
     <header class="header">
         <div class="left">
-            <h2>MIMIC PANEL</h2>
+            <h1>MIMIC PANEL</h1>
         </div>
         <div class="right">
-            <button style="background: #00ff00;color: #000;"><%- data.length %></button>
-            <button id="copy" title="Copy" style="color: aqua;"><i class="so so-copy"></i></button>
-            <button title="clear All" id="clear-all" style="color: red;"><i class="ma ma-clear-all"></i></button>
-            <a href="/download" target="_blank"><button><i class="so so-download-alt"></i></button></a>
+            <button onclick="openFM('.file-manager')"><i class="so so-file-alt"></i></button>
+            <button id="db-btn"><i class="a1 a1-database"></i></button>
+            <a href="/">
+                <button><i class="so so-home"></i></button></a>
         </div>
     </header>
 
-    <section class="overview">
-        <div>
-            <label for="">URL</label>
-            <input type="text" id="url" placeholder="Url" readonly>
+    <section class="over">
+        <div class="inp">
+            <label for="">target</label>
+            <input type="text" value="<%- page.target %>" readonly>
         </div>
-        <div>
-            <label for="">IMAGE URL</label>
-            <input type="text" id="i-url" placeholder="Url" readonly>
+        <div class="inp">
+            <label for="">id</label>
+            <input type="text" value="<%- page.id %>" readonly>
         </div>
+        <div class="inp">
+            <label for="">url</label>
+            <input type="text" readonly id="url">
+        </div>
+        <button id="copy" style="background: #008cff;"><i class="so so-copy"></i></button>
+        <button id="clear" style="background: #ff3600;"><i class="ma ma-clear"></i></button>
     </section>
 
-    <section class="boxs">
+    <dialog class="file-manager">
+        <div class="head">
+            <h1>File Manager - <%- page.target %></h1>
+            <form method="dialog">
+                <input type="file" id="file-upload">
+                <button><i class="ic ic-close-sharp"></i></button>
+            </form>
+        </div>
 
-        <%let index=1; for(let obj of data) { %>
-            <div class="box" id="<%- index %>">
-                <a href="#<%- index %>"></a>
-                <p class="start"> >> <%- index %></p>
-                <table>
-                    <% for(let i in obj) { %>
-                        <% if(typeof obj[i]==='object' && obj[i] !==null) { %>
-                            <tr>
-                                <th><%- i %></th>
-                                <td>
-                                    <table>
-                                        <% for(let a in obj[i]) {%>
-                                            <tr>
-                                                <th><%- a %></th>
-                                                <td><%- JSON.stringify(obj[i][a]) %></td>
-                                            </tr>
-                                            <% } %>
-                                    </table>
-                                </td>
-                            </tr>
-                            <%} else { %>
-                                <tr>
-                                    <th><%- i %></th>
-                                    <td><%- obj[i] %></td>
-                                </tr>
-                                <% } %>
-                                    <% } %>
-                </table>
+        <table>
+            <tr>
+                <th>S.NO</th>
+                <th>FILENAME</th>
+                <th>CONTROLS</th>
+            </tr>
+            <%- fm %>
+        </table>
+    </dialog>
+
+    <dialog class="db">
+        <div class="head">
+            <h1>Database - <%- page.target %> [req = <%- page.data.length %>]</h1>
+            <div>
+                <button id="db-clear"><i class="ma ma-delete-sweep"></i></button>
+                <form method="dialog">
+                    <button><i class="ic ic-close-sharp"></i></button>
+                </form>
             </div>
-            <% index +=1; } %>
+        </div>
+        <div class="c"></div>
+    </dialog>
+
+    <section class="content">
+
     </section>
 
     <script>
@@ -145,36 +159,119 @@
             transports: ['websocket'],
             secure: true,
         })
-        let copyBtn = document.querySelector("#copy")
-        let clearAll = document.querySelector("#clear-all")
-        let boxs = document.querySelectorAll(".boxs .box")
-        document.querySelector("#url").value = url
-        document.querySelector("#i-url").value = url + "a.allExtension"
 
-        copyBtn.addEventListener("click", () => {
-            navigator.clipboard.writeText(url)
-        })
-
-        socket.on("a", (data) => {
-            location.reload()
-        })
-
-        clearAll.addEventListener("click", () => {
-            get("/clear", res => {
-                location.reload()
+        document.querySelectorAll("#fm-delete").forEach(btn => {
+            btn.addEventListener("click", () => {
+                GET(`/panel/fileDel?id=${id}&value=${btn.getAttribute("data-value")}`, res => {
+                    location.reload()
+                })
             })
         })
 
-        if (boxs.length > 0) {
-            boxs[boxs.length - 1].querySelector("a").click()
+        document.querySelectorAll("#fm-copy").forEach(btn => {
+            btn.addEventListener("click", () => {
+                let value = btn.getAttribute("data-value")
+                let u = `${location.origin}/mimic/${id}/${value}`
+                navigator.clipboard.writeText(u)
+            })
+        })
+
+        document.querySelector("#db-clear").addEventListener("click", () => {
+            GET('/panel/del?id=' + id, res => { location.reload() })
+        })
+
+        document.querySelector("#db-btn").addEventListener("click", () => {
+            GET("/panel/data?id=" + id, res => {
+                let html = ""
+                let index = 1
+                for (let obj of res.data.data) {
+                    html += tableRender(obj, index)
+                    index += 1
+                }
+                document.querySelector(".db").open = true
+                document.querySelector(".db .c").innerHTML = html
+            })
+        })
+
+        function openFM(container) {
+            document.querySelector(container).open = true
         }
 
-        async function get(url, callback) {
+        let content = document.querySelector(".content")
+        let url = `${location.origin}/mimic/${id}`
+        document.querySelector("#url").value = url
+
+        document.querySelector("#copy").addEventListener("click", () => {
+            navigator.clipboard.writeText(url)
+        })
+
+        document.querySelector("#clear").addEventListener("click", () => {
+            content.innerHTML = ""
+        })
+
+        var index = 1
+        socket.on(id, (data) => {
+            document.title = `${index} Mimic Panel`
+            document.querySelector(".content").innerHTML += tableRender(data, index)
+            index += 1
+
+            let b = document.querySelectorAll(".content .box")
+            if (b.length > 0) {
+                b[b.length - 1].querySelector("a").click()
+            }
+        })
+
+        function tableRender(data, index) {
+            let html = `
+            <div class="box" id="box-${index}"><h2>>>${index}</h2><table><a href="#box-${index}"></a>`
+            for (let key in data) {
+                if (typeof data[key] === 'object' && data[key] !== null) {
+                    let inTable = ` <tr>
+                        <th>${key}</th>
+                        <td>
+                            <table>
+                                `
+                    for (let ina in data[key]) {
+                        inTable += `<tr>
+                            <th>${ina}</th>
+                            <td>${JSON.stringify(data[key][ina])}</td>
+                        </tr>`
+                    }
+                    inTable += `</table></td></tr>`
+                    html += inTable
+                } else {
+                    html += `<tr>
+                        <th>${key}</th>
+                        <td>${data[key]}</td>
+                    </tr>`
+                }
+            }
+
+            html += `</table></div>`
+            return html
+        }
+
+        document.querySelector("#file-upload").addEventListener("change", async () => {
             try {
-                let res = await axios.get(url)
-                callback(res)
-            } catch (err) {
-                alert("requests error")
+                let f = new FormData()
+                f.append("file", document.querySelector("#file-upload").files[0])
+                let res = await axios.post("/panel/upload?id=" + id, f)
+
+                if (res.data == "e") {
+                    alert("upload error")
+                } else {
+                    location.reload()
+                }
+            } catch {
+                alert("upload error")
+            }
+        })
+
+        async function GET(url, callback) {
+            try {
+                callback(await axios.get(url))
+            } catch {
+                alert("request error")
             }
         }
     </script>
