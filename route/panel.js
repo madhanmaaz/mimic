@@ -61,5 +61,9 @@ app.post("/upload", (req, res) => {
     }
 })
 
+app.get("/download", (req, res) => {
+    res.download(`${req.mainPath}/ssd/book/${req.query.id}.json`)
+})
+
 
 module.exports = app
