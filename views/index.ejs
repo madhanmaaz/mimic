@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard - Mimic</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css"
+        integrity="sha512-z3gLpd7yknf1YoNbCzqRKc4qyor8gaKU1qmn+CShxbuBusANI9QpRohGBreCFkKxLhei6S9CQXFEbbKuqLg0DA=="
+        crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <link rel="stylesheet" href="/assets/css/style.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/axios/1.5.1/axios.min.js"
+        integrity="sha512-emSwuKiMyYedRwflbZB2ghzX8Cw8fmNVgZ6yQNNXXagFzFOaQmbvQ1vmDkddHjm5AITcBIZfC7k4ShQSjgPAmQ=="
+        crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <script src="/assets/js/index.js" defer></script>
+</head>
+
+<body class="dash">
+    <header class="header">
+        <div>
+            <h2>Mimic Dashboard</h2>
+        </div>
+        <div>
+            <input type="text" placeholder="target.com or target name,,," id="target-name">
+            <button id="create" class="btn" style="background: rgb(0, 183, 255);" title="add target"><i
+                    class="fa-solid fa-plus"></i></button>
+            <button id="delete-all" class="btn" style="background: red;" title="delete all"><i
+                    class="fa-solid fa-trash"></i></button>
+        </div>
+    </header>
+
+    <section>
+        <% for(let i of data) { %>
+            <div class="box">
+                <p data-id="<%- i.id %>"><%- i.target %></p>
+                <button data-id="<%- i.id %>" data-name="<%- i.target %>" class="btn"><i
+                        class="fa-solid fa-trash"></i></button>
+            </div>
+            <% } %>
+    </section>
+
+    <div class="intro">This tool was created by madhan.</div>
+
+</body>
+
+</html>

@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>DB - Mimic</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css"
+        integrity="sha512-z3gLpd7yknf1YoNbCzqRKc4qyor8gaKU1qmn+CShxbuBusANI9QpRohGBreCFkKxLhei6S9CQXFEbbKuqLg0DA=="
+        crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <link rel="stylesheet" href="/assets/css/style.css">
+    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+    <style>
+        .data-box {
+            display: inline-flex;
+            flex-direction: column-reverse;
+        }
+    </style>
+    <script>
+        const ID = `<%- page.id %>`
+    </script>
+</head>
+
+<body class="dash panel db">
+    <header class="header">
+        <div class="left">
+            <h2>mimic Database</h2>
+        </div>
+
+        <div class="right">
+            <button class="btn" style="background: rgb(0, 140, 255);" id="reload-btn">
+                <i class="fa-solid fa-rotate-right"></i>
+            </button>
+            <button class="btn" style="background: red;" id="clear-btn">
+                <i class="fa-solid fa-trash"></i>
+            </button>
+        </div>
+    </header>
+
+    <section>
+        <div class="over">
+            <pre>TARGET: <%- page.target %></pre>
+            <pre>Total: <%- page.data.length %></pre>
+        </div>
+
+        <div class="data-box">
+            <%- html %>
+        </div>
+    </section>
+    <div class="intro">This tool was created by madhan.</div>
+    <script>
+        try {
+            let aTags = document.querySelectorAll(".data-box a")
+            aTags[aTags.length - 1].click()
+        } catch (error) { }
+
+        document.querySelector("#reload-btn").onclick = () => {
+            location.reload()
+        }
+
+        document.querySelector("#clear-btn").onclick = () => {
+            if (confirm("delete all?")) {
+                GET("/panel/db/del?id=" + ID, data => {
+                    location.reload()
+                })
+            }
+        }
+
+
+        async function GET(url, callback) {
+            try {
+                callback(await axios.get(url))
+            } catch {
+                alert("request error")
+            }
+        }
+    </script>
+</body>
+
+</html>

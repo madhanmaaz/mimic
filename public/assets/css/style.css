@@ -1,0 +1,207 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    background: none;
+    border: none;
+    outline: none;
+    text-decoration: none;
+    transition: .5s;
+    font-family: sans-serif;
+}
+
+::-webkit-scrollbar {
+    width: .5rem;
+}
+
+::-webkit-scrollbar-thumb {
+    background: rgba(0, 0, 0, 0.6);
+    border-radius: 10px;
+}
+
+body {
+    background: url(/assets/src/bg.jpg);
+    background-size: cover;
+    background-repeat: no-repeat;
+    height: 100vh;
+    color: #e5e5e5;
+}
+
+input {
+    padding: .5rem;
+    font-size: 1rem;
+    border-radius: 6px;
+    background: rgba(255, 255, 255, 0.1);
+}
+
+button.btn {
+    padding: .5rem;
+    font-size: 1rem;
+    border-radius: 6px;
+    color: #fff;
+    background: #ff3600;
+    padding: .5rem 1.5rem;
+    cursor: pointer;
+}
+
+button.btn:hover {
+    opacity: 80%;
+}
+
+.login-box {
+    display: grid;
+    place-items: center;
+}
+
+.login-box form {
+    background: rgba(0, 0, 0, 0.8);
+    width: 300px;
+    padding: 1rem;
+    border-radius: 6px;
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    text-align: center;
+}
+
+.login-box form input {
+    margin: .5rem auto;
+    font-size: 1rem;
+    color: #e5e5e5;
+    border: 2px solid transparent;
+    width: 100%;
+}
+
+.login-box form input:focus {
+    border-color: #ff3600;
+}
+
+.login-box form input[type="submit"] {
+    background: #ff3600;
+    color: #fff;
+    padding: .5rem;
+    border-radius: 6px;
+    cursor: pointer;
+}
+
+.login-box form a {
+    color: #00ff00;
+    margin: 1rem;
+    display: block;
+}
+
+/* dash */
+
+.dash .header {
+    background: #000;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 1rem;
+    height: 7vh;
+}
+
+.dash .header h2 {
+    text-transform: uppercase;
+}
+
+.dash .header input {
+    margin: 0 .5rem;
+    color: #e5e5e5;
+}
+
+.dash section {
+    height: 90vh;
+    padding: 1rem;
+    width: 100%;
+    max-width: 1300px;
+    margin: auto;
+    background: rgba(0, 0, 0, 0.1);
+    overflow: hidden;
+    overflow-y: scroll;
+}
+
+.dash section .box {
+    display: flex;
+    background: #111;
+    padding: .5rem;
+    justify-content: space-between;
+    border-radius: 10px;
+    margin: .2rem auto;
+    align-items: center;
+}
+
+.dash section .box p {
+    width: 100%;
+    padding: .5rem;
+    cursor: pointer;
+}
+
+.dash .intro {
+    width: 100%;
+    text-align: center;
+    background: linear-gradient(100deg, #ff2600, #5900ff);
+    padding: .2rem;
+    text-transform: uppercase;
+    height: 3vh;
+}
+
+.dash .over {
+    display: flex;
+    align-items: center;
+    gap: .5rem;
+    background: rgba(0, 0, 0, 0.4);
+    padding: .5rem;
+    height: 6vh;
+}
+
+.dash .over input {
+    width: 100%;
+    color: #e5e5e5;
+}
+
+.panel section {
+    padding: 0;
+    overflow: hidden;
+}
+
+.panel .data-box {
+    height: 84vh;
+    width: 100%;
+    overflow: hidden;
+    overflow-y: scroll;
+    padding: .2rem;
+}
+
+.panel .data-box .item {
+    background: #000;
+    border-radius: 10px;
+    margin: .3rem auto;
+}
+
+.panel .data-box .item a {
+    display: block;
+    width: 100%;
+    background: #ff3600;
+    padding: .3rem;
+    cursor: pointer;
+    color: #e5e5e5;
+    border-radius: 10px;
+}
+
+table {
+    text-align: left;
+    width: 100%;
+}
+
+tr,
+td,
+th {
+    padding: .5rem;
+}
+
+th {
+    background: #111;
+}
+
+td {
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+}

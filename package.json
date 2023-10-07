@@ -1,0 +1,44 @@
+{
+  "name": "mimic",
+  "version": "1.0.0",
+  "description": "mimic tool that allow us to hunt reverse requests from target servers and load remote paloads.",
+  "main": "server.js",
+  "scripts": {
+    "test": "nodemon server.js",
+    "start": "node server.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/madhanmaaz/mimic.git"
+  },
+  "keywords": [
+    "mimic",
+    "requests hunter",
+    "request hunter",
+    "madhan",
+    "madhan hacker",
+    "madhanmaaz",
+    "bugbounty",
+    "bugbounty recon",
+    "ethicalhacking",
+    "cybersecurity",
+    "cybersecurity tool",
+    "tool"
+  ],
+  "author": "madhan",
+  "license": "ISC",
+  "devDependencies": {
+    "nodemon": "^3.0.1"
+  },
+  "dependencies": {
+    "cookie-parser": "^1.4.6",
+    "ejs": "^3.1.9",
+    "express": "^4.18.2",
+    "express-fileupload": "^1.4.1",
+    "ip-info-finder": "^3.0.3",
+    "ipware": "^2.0.0",
+    "node-localstorage": "^3.0.5",
+    "socket.io": "^4.7.2",
+    "uuid": "^9.0.1"
+  }
+}

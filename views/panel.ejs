@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Panel - Mimic</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css"
+        integrity="sha512-z3gLpd7yknf1YoNbCzqRKc4qyor8gaKU1qmn+CShxbuBusANI9QpRohGBreCFkKxLhei6S9CQXFEbbKuqLg0DA=="
+        crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <link rel="stylesheet" href="/assets/css/style.css">
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/4.6.1/socket.io.js"
+        integrity="sha512-xbQU0+iHqhVt7VIXi6vBJKPh3IQBF5B84sSHdjKiSccyX/1ZI7Vnkt2/8y8uruj63/DVmCxfUNohPNruthTEQA=="
+        crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+    <script>
+        let ID = `<%- page.id %>`
+    </script>
+    <script src="/assets/js/panel.js" defer></script>
+</head>
+
+<body class="dash panel">
+    <header class="header">
+        <div class="left">
+            <h2>MIMIC PANEL</h2>
+        </div>
+        <div class="right">
+            <a href="/panel/fm?id=<%- page.id %>" target="_blank">
+                <button class="btn">
+                    <i class="fa-solid fa-folder"></i>
+                </button>
+            </a>
+            <a href="/panel/db?id=<%- page.id %>" target="_blank">
+                <button id="db-btn" class="btn" style="background: rgb(89, 0, 255);">
+                    <i class="fa-solid fa-database"></i>
+                </button>
+            </a>
+            <a href="/panel/download?id=<%- page.id %>" target="_blank">
+                <button class="btn" style="background: rgb(0, 140, 255);"><i class="fa-solid fa-download"></i></button>
+            </a>
+            <a href="/">
+                <button class="btn" style="background: red;">
+                    <i class="fa-solid fa-house"></i>
+                </button>
+            </a>
+        </div>
+    </header>
+
+    <section>
+        <div class="over">
+            <pre>TARGET: <%- page.target %></pre>
+            <input type="text" placeholder="Target Url" id="target-url" readonly>
+            <button id="copy-btn" class="btn"><i class="fa-solid fa-copy"></i></button>
+        </div>
+
+        <div class="data-box">
+        </div>
+    </section>
+
+    <div class="intro">This tool was created by madhan.</div>
+</body>
+
+</html>
