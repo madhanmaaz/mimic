@@ -2,6 +2,7 @@
 # MIMIC
 
 - MIMIC HUNTER FOR BUG HUNTING. THIS IS A REQUEST HUNTING TOOL.
+  
 ![App Screenshot](./scr/scr-1.png)
 
 
