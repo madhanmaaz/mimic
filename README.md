@@ -2,6 +2,11 @@
 # MIMIC
 
 - MIMIC HUNTER FOR BUG HUNTING. THIS IS A REQUEST HUNTING TOOL.
+
+## Authors
+
+- [@madhanmaaz](https://www.github.com/madhanmaaz)
+  
 ![App Screenshot](./scr/scr-1.png)
 
 
